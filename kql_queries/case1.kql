@@ -1,0 +1,339 @@
+DeviceEvents
+| where Timestamp between (datetime(2026-08-10 13:15:00) .. datetime(2026-08-10 13:25:00))
+| where DeviceName =~ "user1"
+| project Timestamp,
+          DeviceName,
+          ActionType,
+          FileName,
+          FolderPath,
+          ProcessId,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          InitiatingProcessCommandLine,
+          AccountName,
+          RemoteIP,
+          RemotePort,
+          AdditionalFields
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName == "user1"
+| where Timestamp between (datetime(2026-08-10 13:15:00) .. datetime(2026-08-10 13:20:00))
+| where FileName =~ "powershell.exe"
+| project Timestamp, DeviceName, AccountName, ProcessId, InitiatingProcessFileName, InitiatingProcessCommandLine, ProcessCommandLine
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 13:15:00) .. datetime(2026-08-10 13:20:00))
+| where FileName =~ "powershell.exe"
+| project Timestamp, DeviceName, AccountName, ProcessId,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          InitiatingProcessCommandLine,
+          ProcessCommandLine
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName == "user1"
+| where FileName =~ "powershell.exe"
+| project Timestamp, DeviceName, AccountName, ProcessId,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          InitiatingProcessCommandLine,
+          ProcessCommandLine
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 13:15:00) .. datetime(2026-08-10 13:20:00))
+| project Timestamp, DeviceName, AccountName, FileName, ProcessId,
+          InitiatingProcessFileName, InitiatingProcessId,
+          InitiatingProcessAccountName, ProcessCommandLine,
+          InitiatingProcessCommandLine
+| order by Timestamp asc
+
+DeviceInfo
+| where DeviceName =~ "DESKTOP-CM2A37C"
+| project Timestamp, DeviceName, PublicIP, OSPlatform, LoggedOnUsers
+| order by Timestamp desc
+
+DeviceNetworkEvents
+| where Timestamp between (datetime(2026-08-10 13:10:00) .. datetime(2026-08-10 13:25:00))
+| where RemoteIP == "41.13.114.11"
+| project Timestamp, DeviceName, LocalIP, RemoteIP, RemotePort, Protocol, InitiatingProcessFileName, InitiatingProcessCommandLine
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 13:10:00) .. datetime(2026-08-10 13:25:00))
+| where DeviceName =~ "user1"
+| where FileName =~ "powershell.exe"
+| project Timestamp, DeviceName, AccountName, ProcessId, InitiatingProcessFileName, InitiatingProcessId, InitiatingProcessCommandLine, ProcessCommandLine
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 13:10:00) .. datetime(2026-08-10 13:30:00))
+| where DeviceName == "user1"
+| project Timestamp,
+          DeviceName,
+          AccountName,
+          FileName,
+          ProcessCommandLine,
+          InitiatingProcessFileName,
+          InitiatingProcessCommandLine,
+          InitiatingProcessAccountName,
+          InitiatingProcessRemoteSessionDeviceName,
+          InitiatingProcessRemoteSessionIP,
+          IsProcessRemoteSession,
+          ProcessRemoteSessionDeviceName,
+          ProcessRemoteSessionIP,
+          ProcessId,
+          InitiatingProcessId
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 13:15:00) .. datetime(2026-08-10 13:20:00))
+| where FileName =~ "powershell.exe"
+| project Timestamp,
+          DeviceName,
+          AccountName,
+          ProcessId,
+          ProcessCommandLine,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          InitiatingProcessCommandLine,
+          IsProcessRemoteSession,
+          ProcessRemoteSessionIP,
+          ProcessRemoteSessionDeviceName,
+          InitiatingProcessRemoteSessionIP,
+          InitiatingProcessRemoteSessionDeviceName
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 13:17:00) .. datetime(2026-08-10 13:19:00))
+| where FileName =~ "powershell.exe"
+| project Timestamp, DeviceName, AccountName, ProcessId, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessId
+| order by Timestamp asc
+
+let DeviceName = "USER1";
+let StartTime = datetime(2026-08-10 11:30:00);
+let EndTime   = datetime(2026-08-10 12:00:00);
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 12:15:00) .. datetime(2026-08-10 17:20:00))
+| where DeviceName =~ DeviceName
+| where
+    ProcessCommandLine has_any (
+        "Invoke-AtomicTest",
+        "Get-AtomicTest",
+        "Test-Atomic",
+        "Start-Atomic",
+        "AtomicRedTeam",
+        "atomic-red-team"
+    )
+    or FolderPath has_any (
+        @"\atomic-red-team\",
+        @"\AtomicRedTeam\"
+    )
+    or FileName in~ (
+        "Invoke-DownloadCradle.ps1",
+        "AdFind.exe",
+        "SOAPHound.exe",
+        "BadPotato.exe",
+        "Syscall.exe"
+    )
+| project
+    Timestamp,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    AccountName,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    SHA256
+| order by Timestamp asc
+
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 09:15:00) .. datetime(2026-08-10 10:20:00))
+| where DeviceName =~ "USER1"
+| project
+    Timestamp,
+    DeviceName,
+    AccountName,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    SHA256,
+    ProcessId,
+    InitiatingProcessId
+| order by Timestamp asc
+
+
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-08-10 09:25:00) .. datetime(2026-08-10 10:00:00))
+| where
+    ProcessCommandLine has_any (
+        "Invoke-AtomicTest",
+        "Get-AtomicTest",
+        "Test-Atomic",
+        "Start-Atomic",
+        "AtomicRedTeam",
+        "atomic-red-team"
+    )
+    or FolderPath has_any (
+        @"\atomic-red-team\",
+        @"\AtomicRedTeam\"
+    )
+    or FileName in~ (
+        "Invoke-DownloadCradle.ps1",
+        "AdFind.exe",
+        "SOAPHound.exe",
+        "BadPotato.exe",
+        "Syscall.exe"
+    )
+| project
+    Timestamp,
+    DeviceName,
+    AccountName,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    SHA256
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName =~ "user1"
+| where Timestamp between (
+    datetime(2026-08-10 11:00:00) ..
+    datetime(2026-08-10 14:00:00)
+)
+| where
+    FileName in~ (
+        "powershell.exe",
+        "pwsh.exe",
+        "git.exe",
+        "net.exe",
+        "InstallUtil.exe"
+    )
+    or ProcessCommandLine contains "atomic"
+    or ProcessCommandLine contains "AtomicRedTeam"
+    or ProcessCommandLine contains "Invoke-Atomic"
+    or ProcessCommandLine contains "powershell-yaml"
+    or ProcessCommandLine contains "Set-ExecutionPolicy"
+    or ProcessCommandLine contains "ExecutionPolicy"
+    or ProcessCommandLine contains "atomic-red-team"
+| project
+    Timestamp,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    AccountName,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    SHA256,
+    ProcessId,
+    InitiatingProcessId
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName =~ "user1"
+| where Timestamp between (
+    datetime(2026-08-10 13:20:00) ..
+    datetime(2026-08-10 14:00:00)
+)
+| where FileName =~ "powershell.exe"
+| project
+    Timestamp,
+    AccountName,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    ProcessId,
+    InitiatingProcessId,
+    SHA256
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName =~ "user1"
+| where Timestamp between (
+    datetime(2026-08-10 13:20:00) ..
+    datetime(2026-08-10 14:00:00)
+)
+| where
+    ProcessCommandLine has_any (
+        "Invoke-AtomicTest",
+        "Invoke-AtomicTestAll",
+        "Get-AtomicTest",
+        "Test-Atomic",
+        "Start-Atomic",
+        "Invoke-Atomic",
+        "Invoke-AtomicRedTeam"
+    )
+    or FileName in~ (
+        "AdFind.exe",
+        "SOAPHound.exe",
+        "BadPotato.exe",
+        "Syscall.exe",
+        "listplanting.exe",
+        "injectcontext.exe",
+        "injectview.exe"
+    )
+    or FolderPath contains "\\atomic-red-team\\"
+    or FolderPath contains "\\AtomicRedTeam\\"
+| project
+    Timestamp,
+    AccountName,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    ProcessId,
+    InitiatingProcessId,
+    SHA256
+| order by Timestamp asc
+
+AlertInfo
+| where Timestamp between (
+    datetime(2026-08-10 13:20:00) ..
+    datetime(2026-08-10 15:00:00)
+)
+| where Title has_any (
+    "PowerSploit",
+    "Atomic",
+    "Wacatac",
+    "post-exploitation",
+    "ransomware",
+    "lateral movement"
+)
+| project
+    Timestamp,
+    AlertId,
+    Title,
+    Severity,
+    Category,
+    ServiceSource,
+    DetectionSource
+| order by Timestamp asc
+
+AlertEvidence
+| where Timestamp between (
+    datetime(2026-08-10 13:20:00) ..
+    datetime(2026-08-10 15:00:00)
+)
+| where DeviceName =~ "user1"
+| project
+    Timestamp,
+    AlertId,
+    EntityType,
+    EvidenceRole,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    AccountName,
+    SHA256,
+    RemoteIP
+| order by Timestamp asc
