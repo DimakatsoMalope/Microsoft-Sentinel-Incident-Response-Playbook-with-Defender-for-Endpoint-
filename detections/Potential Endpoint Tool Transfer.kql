@@ -1,0 +1,27 @@
+DeviceNetworkEvents
+| where Timestamp > ago(1h)
+| where isnotempty(RemoteUrl)
+| where RemoteUrl has_any (
+    "pastebin.com",
+    "paste.ee",
+    "githubusercontent.com",
+    "raw.githubusercontent.com",
+    "anonfiles.com"
+)
+| project
+    Timestamp,
+    DeviceId,
+    DeviceName,
+    RemoteUrl,
+    RemoteIP,
+    RemotePort,
+    Protocol,
+    ActionType,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    InitiatingProcessId,
+    InitiatingProcessParentFileName,
+    InitiatingProcessParentId,
+    InitiatingProcessAccountName,
+    InitiatingProcessSHA1
+| order by Timestamp desc
