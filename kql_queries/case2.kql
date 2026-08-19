@@ -1,0 +1,100 @@
+DeviceProcessEvents
+| where DeviceName =~ "win-sevr1"
+| where Timestamp between (
+    datetime(2026-08-18 14:50:00) .. datetime(2026-08-18 15:10:00)
+)
+| where AccountName =~ "dima"
+| project
+    Timestamp,
+    DeviceName,
+    AccountName,
+    FileName,
+    FolderPath,
+    ProcessCommandLine,
+    ProcessId,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    InitiatingProcessId,
+    InitiatingProcessAccountName
+| order by Timestamp asc
+
+
+DeviceFileEvents
+| where DeviceName =~ "win-sevr1"
+| where Timestamp between (
+    datetime(2026-08-18 14:50:00) .. datetime(2026-08-18 15:10:00)
+)
+| project
+    Timestamp,
+    ActionType,
+    FileName,
+    FolderPath,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    InitiatingProcessAccountName
+| order by Timestamp asc
+
+AlertInfo
+| where Timestamp between (
+    datetime(2026-08-18 14:50:00) .. datetime(2026-08-18 15:15:00)
+)
+| where Title has_any (
+    "Credential",
+    "rundll32",
+    "keymgr",
+    "credential dumping",
+    "suspicious",
+    "malicious"
+)
+| project Timestamp, AlertId, Title, Severity, Category, ServiceSource, DetectionSource
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName =~ "win-sevr1"
+| where Timestamp between (datetime(2026-08-18 12:50:00) .. datetime(2026-08-18 13:05:00))
+| where ProcessId in (6572, 5188, 1360)
+   or InitiatingProcessId in (6572, 5188, 1360)
+| project Timestamp,
+          DeviceName,
+          AccountName,
+          FileName,
+          ProcessId,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          InitiatingProcessCommandLine,
+          ProcessCommandLine,
+          FolderPath
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName =~ "win-sevr1"
+| where Timestamp between (datetime(2026-08-18 11:55:00) .. datetime(2026-08-18 16:05:00))
+| where ProcessId == 1360
+   or InitiatingProcessId == 1360
+| project Timestamp,
+          AccountName,
+          FileName,
+          ProcessId,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          ProcessCommandLine,
+          InitiatingProcessCommandLine,
+          FolderPath
+| order by Timestamp asc
+
+DeviceProcessEvents
+| where DeviceName =~ "win-sevr1"
+| where Timestamp between (
+    datetime(2026-08-18 14:50:00) .. datetime(2026-08-18 15:10:00)
+)
+| where ProcessId in (6572, 5188, 1360)
+   or InitiatingProcessId in (6572, 5188, 1360)
+| project Timestamp,
+          AccountName,
+          FileName,
+          ProcessId,
+          InitiatingProcessFileName,
+          InitiatingProcessId,
+          ProcessCommandLine,
+          FolderPath
+| order by Timestamp asc
